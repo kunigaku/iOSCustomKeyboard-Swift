@@ -79,7 +79,7 @@ class KeyboardViewController: UIInputViewController {
         
         //if shiftStatus is 1, reset it to 0 by pressing the shift key
         if (shiftStatus == 1) {
-            shiftKeyPressed(shiftButton)
+            shiftKeyPressed(sender: shiftButton)
         }
     }
     
@@ -92,14 +92,14 @@ class KeyboardViewController: UIInputViewController {
     }
     
     
-    func spaceKeyDoubleTapped() {
+    @objc func spaceKeyDoubleTapped() {
         //double tapping the space key automatically inserts a period and a space
         //if necessary, activate the shift button
         textDocumentProxy.deleteBackward()
         textDocumentProxy.insertText(". ")
         
         if (shiftStatus == 0) {
-            shiftKeyPressed(shiftButton)
+            shiftKeyPressed(sender: shiftButton)
         }
     }
     
@@ -113,7 +113,7 @@ class KeyboardViewController: UIInputViewController {
         shiftKeys()
     }
     
-    func shiftKeyDoubleTapped() {
+    @objc func shiftKeyDoubleTapped() {
         //set shift to caps lock and set all letters to uppercase
         shiftStatus = 2;
         
@@ -124,28 +124,28 @@ class KeyboardViewController: UIInputViewController {
         //if shift is off, set letters to lowercase, otherwise set them to uppercase
         if (shiftStatus == 0) {
             for letterButton in letterButtonsArray {
-                letterButton.setTitle(letterButton.titleLabel!.text!.lowercaseString, forState: .Normal)
+                letterButton.setTitle(letterButton.titleLabel!.text?.lowercased(), for: .normal)
             }
         } else {
             for letterButton in letterButtonsArray {
-                letterButton.setTitle(letterButton.titleLabel!.text!.uppercaseString, forState: .Normal)
+                letterButton.setTitle(letterButton.titleLabel!.text?.uppercased(), for: .normal)
             }
         }
         
         //adjust the shift button images to match shift mode
-        let shiftButtonImageName = NSString(format: "shift_\(shiftStatus)")
-        shiftButton.setImage(UIImage(named: shiftButtonImageName as String), forState: .Normal)
+        let shiftButtonImageName = NSString(format: "shift_\(shiftStatus)" as NSString)
+        shiftButton.setImage(UIImage(named: shiftButtonImageName as String), for: .normal)
         
-        let shiftButtonHLImageName = NSString(format: "shift_\(shiftStatus)HL")
-        shiftButton.setImage(UIImage(named: shiftButtonHLImageName as String), forState: .Highlighted)
+        let shiftButtonHLImageName = NSString(format: "shift_\(shiftStatus)HL" as NSString)
+        shiftButton.setImage(UIImage(named: shiftButtonHLImageName as String), for: .highlighted)
     }
     
     @IBAction func switchKeyboardMode(sender: AnyObject) {
-        numbersRow1View.hidden = true;
-        numbersRow2View.hidden = true;
-        symbolsRow1View.hidden = true;
-        symbolsRow2View.hidden = true;
-        numbersSymbolsRow3View.hidden = true;
+        numbersRow1View.isHidden = true;
+        numbersRow2View.isHidden = true;
+        symbolsRow1View.isHidden = true;
+        symbolsRow2View.isHidden = true;
+        numbersSymbolsRow3View.isHidden = true;
         
         //switches keyboard to ABC, 123, or #+= mode
         //case 1 = 123 mode, case 2 = #+= mode
@@ -154,34 +154,34 @@ class KeyboardViewController: UIInputViewController {
         switch (sender.tag) {
             
         case 1:
-            numbersRow1View.hidden = false;
-            numbersRow2View.hidden = false;
-            numbersSymbolsRow3View.hidden = false;
+            numbersRow1View.isHidden = false;
+            numbersRow2View.isHidden = false;
+            numbersSymbolsRow3View.isHidden = false;
             
             //change row 3 switch button image to #+= and row 4 switch button to ABC
-            switchModeRow3Button.setImage(UIImage(named: "symbols"), forState: .Normal)
-            switchModeRow3Button.setImage(UIImage(named: "symbolsHL"), forState: .Highlighted)
+            switchModeRow3Button.setImage(UIImage(named: "symbols"), for: .normal)
+            switchModeRow3Button.setImage(UIImage(named: "symbolsHL"), for: .highlighted)
             switchModeRow3Button.tag = 2;
-            switchModeRow4Button.setImage(UIImage(named: "abc"), forState: .Normal)
-            switchModeRow4Button.setImage(UIImage(named: "abcHL"), forState: .Highlighted)
+            switchModeRow4Button.setImage(UIImage(named: "abc"), for: .normal)
+            switchModeRow4Button.setImage(UIImage(named: "abcHL"), for: .highlighted)
             switchModeRow4Button.tag = 0;
             break;
             
         case 2:
-            symbolsRow1View.hidden = false;
-            symbolsRow2View.hidden = false;
-            numbersSymbolsRow3View.hidden = false;
+            symbolsRow1View.isHidden = false;
+            symbolsRow2View.isHidden = false;
+            numbersSymbolsRow3View.isHidden = false;
             
             //change row 3 switch button image to 123
-            switchModeRow3Button.setImage(UIImage(named: "numbers"), forState: .Normal)
-            switchModeRow3Button.setImage(UIImage(named: "numbersHL"), forState: .Highlighted)
+            switchModeRow3Button.setImage(UIImage(named: "numbers"), for: .normal)
+            switchModeRow3Button.setImage(UIImage(named: "numbersHL"), for: .highlighted)
             switchModeRow3Button.tag = 1;
             break;
             
         default:
             //change the row 4 switch button image to 123
-            switchModeRow4Button.setImage(UIImage(named: "numbers"), forState: .Normal)
-            switchModeRow4Button.setImage(UIImage(named: "numbersHL"), forState: .Highlighted)
+            switchModeRow4Button.setImage(UIImage(named: "numbers"), for: .normal)
+            switchModeRow4Button.setImage(UIImage(named: "numbersHL"), for: .highlighted)
             switchModeRow4Button.tag = 1;
             break;
         }
